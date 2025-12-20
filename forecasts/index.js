@@ -47,7 +47,7 @@ function updateForecast(data) {
         return;
     }
 
-    const timeseries = data.properties.timeseries.slice(0, 48); // Next 48 hours
+    const timeseries = data.properties.timeseries; // Show everything available
 
     // Clear container
     forecastsContainer.innerHTML = '';
@@ -81,7 +81,8 @@ function updateForecast(data) {
     const cardsSection = document.createElement('div');
     cardsSection.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;';
 
-    timeseries.slice(0, 12).forEach(entry => {
+    // Show first 24 hours in cards for quick reading
+    timeseries.slice(0, 24).forEach(entry => {
         const card = document.createElement('div');
         card.style.cssText = 'background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center;';
 
@@ -141,7 +142,7 @@ function updateForecast(data) {
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
-    timeseries.slice(0, 24).forEach((entry, index) => {
+    timeseries.forEach((entry, index) => { // Show full table
         const row = document.createElement('tr');
         row.style.cssText = index % 2 === 0 ? 'background: #fafafa;' : '';
 
@@ -172,26 +173,25 @@ function createTemperatureChart(timeseries) {
     const ctx = document.getElementById('tempChart');
     if (!ctx || typeof Chart === 'undefined') return;
 
-    const labels = timeseries.map(entry => formatTime(entry.time));
-    const temperatures = timeseries.map(entry => entry.data.instant.details.air_temperature);
+    // Map data to objects containing x (Date) and y (Temperature)
+    const chartData = timeseries.map(entry => ({
+        x: new Date(entry.time),
+        y: entry.data.instant.details.air_temperature
+    }));
 
     // Calculate night regions for annotation
     const lat = -33.9326; // Stellenbosch
     const lng = 18.8644;
     const annotations = [];
 
-    // Identify day/night transitions in the timeseries
     timeseries.forEach((entry, index) => {
         if (index === timeseries.length - 1) return;
 
         const date = new Date(entry.time);
         const sunTimes = SunCalc.getTimes(date, lat, lng);
-        
-        // Is this specific hour "night"?
         const isNight = date < sunTimes.sunrise || date > sunTimes.sunset;
-        
+    
         if (isNight) {
-            // Determine if this is the start of a night block to show the label
             const isStartOfBlock = index === 0 || (function() {
                 const prevDate = new Date(timeseries[index-1].time);
                 const prevSun = SunCalc.getTimes(prevDate, lat, lng);
@@ -200,8 +200,9 @@ function createTemperatureChart(timeseries) {
 
             annotations.push({
                 type: 'box',
-                xMin: index - 0.5,
-                xMax: index + 0.5,
+                // With a time axis, we use the actual Date objects for xMin/xMax
+                xMin: date,
+                xMax: new Date(timeseries[index+1].time),
                 backgroundColor: 'rgba(0, 0, 50, 0.07)',
                 borderWidth: 0,
                 drawTime: 'beforeDatasetsDraw',
@@ -209,10 +210,8 @@ function createTemperatureChart(timeseries) {
                     display: isStartOfBlock,
                     content: 'Night',
                     color: 'rgba(0, 0, 0, 0.3)',
-                    font: {
-                        size: 10
-                    },
-                    position: 'start' // Simplified position for Chart.js 4.x boxes
+                    font: { size: 10 },
+                    position: 'start'
                 }
             });
         }
@@ -221,40 +220,69 @@ function createTemperatureChart(timeseries) {
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: labels,
             datasets: [{
                 label: 'Temperature (°C)',
-                data: temperatures,
+                data: chartData, // Use the new x/y format
                 borderColor: 'rgb(75, 192, 192)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 0 // Remove points for a cleaner long-term look
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                annotation: {
-                    annotations: annotations
-                }
+                legend: { display: true, position: 'top' },
+                annotation: { annotations: annotations }
             },
             scales: {
                 y: {
                     beginAtZero: false,
-                    title: {
-                        display: true,
-                        text: 'Temperature (°C)'
-                    }
+                    title: { display: true, text: 'Temperature (°C)' }
                 },
                 x: {
+                    type: 'time',
+                    time: {
+                        unit: 'hour',
+                        stepSize: 1, // Check every hour to find our label points
+                        displayFormats: {
+                            hour: 'ddd DD/MM'
+                        },
+                        tooltipFormat: 'ddd DD/MM HH:mm'
+                    },
                     ticks: {
-                        maxRotation: 45,
-                        minRotation: 45
+                        source: 'auto',
+                        callback: function(value, index, ticks) {
+                            const date = new Date(value);
+                            // Keep labels centered at Noon
+                            if (date.getHours() === 12) {
+                                return moment(date).format('ddd DD/MM');
+                            }
+                            return null;
+                        },
+                        autoSkip: false,
+                        maxRotation: 0
+                    },
+                    title: {
+                        display: true,
+                        text: 'Forecast Period'
+                    },
+                    grid: {
+                        // Move gridlines to Midnight
+                        color: (context) => {
+                            if (context.tick && context.tick.value) {
+                                const date = new Date(context.tick.value);
+                                // Draw a solid line only at the start of the day (midnight)
+                                if (date.getHours() === 0) {
+                                    return 'rgba(0,0,0,0.15)';
+                                }
+                            }
+                            return 'transparent';
+                        },
+                        drawOnChartArea: true,
+                        drawTicks: true
                     }
                 }
             }
