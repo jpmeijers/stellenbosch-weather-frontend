@@ -9,8 +9,8 @@
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 <body>
-<div class="row m-0" style="height: 100px;
-background-position: center; background-image: url('assets/jonkershoek-mountains.jpg'); background-size: cover;">
+<div class="row m-0" style="height: 120px;
+background-position: center top; background-image: url('/assets/jonkershoek-mountains.jpg'); background-size: cover;">
     <div class="col min-vh-10 d-flex flex-column justify-content-center align-items-center">
         <h1 style="color: #F0F8FF;" class="mb-0">Stellenbosch Weather</h1>
     </div>
@@ -26,7 +26,10 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Forecasts</a>
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/forecasts/">Forecasts</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Download</a>
@@ -42,11 +45,6 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
                     </a>
                 </li>
             </ul>
-            <!--            <span class="nav-item">-->
-            <!--                <a class="nav-link" href="#">-->
-            <!--                Location: 33&deg;55'42&quot; S, 18&deg;51'55&quot; E, Elevation: 119m-->
-            <!--                </a>-->
-            <!--              </span>-->
         </div>
     </div>
 </nav>
@@ -64,16 +62,14 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
                 <div class="card-header h5">
                     Current Conditions
                 </div>
-                <div class="card-body">
-                    <div>Date: Friday, 20 June 2025</div>
-                    <div>Wind: calm</div>
-                    <div>Rain: unavailable</div>
-                    <div>Humidity: 0%</div>
-                    <div>Barometer: 0hPa</div>
-                    <div>Trend: ---</div>
+                <div class="card-body" id="cardCurrentBody">
+                    <div class="text-muted">unavailable</div>
                 </div>
                 <div class="card-footer">
-                    <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    <small class="text-body-secondary">
+                        Data refreshed
+                        <time class="timeago" datetime="null" id="currentUpdated">---</time>
+                    </small>
                 </div>
             </div>
         </div>
@@ -84,12 +80,14 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
                     Outdoor Temperature
                 </div>
                 <div class="card-body text-center d-flex flex-column justify-content-center"
-                     id="outdoor-temperature-container">
-                    <div class="display-1" id="outdoor-temperature">20&deg;C</div>
+                     id="cardTemperatureBody">
+                    <div class="display-1" id="outdoorTemperature">
+                        <span class="text-muted">---</span>
+                    </div>
                 </div>
-                <div class="card-footer text-center">
-                    <div>Min: 10&deg;C @ 00:54</div>
-                    <div>Max: 30&deg;C @ 14:56</div>
+                <div class="card-footer text-center" id="outdoorTemperatureFooter">
+                    <div class="text-muted">Min: --&deg;C @ --:--</div>
+                    <div class="text-muted">Max: --&deg;C @ --:--</div>
                 </div>
             </div>
         </div>
@@ -99,50 +97,129 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
                 <div class="card-header h5">
                     Forecast
                 </div>
-                <div class="card-body">
-                    <div>Date: Friday, 20 June 2025</div>
-                    <div>Max: Min:</div>
-                    <div></div>
-                    <div>Date: Friday, 20 June 2025</div>
-                    <div>Max: Min:</div>
+                <div class="card-body" id="cardForecastBody">
+                    <div class="text-muted">---</div>
                 </div>
                 <div class="card-footer">
-                    <small class="text-body-secondary">Last updated 3 mins ago</small>
+                    <small class="text-body-secondary">
+                        Forecast updated
+                        <time class="timeago" datetime="null" id="forecastUpdated">---</time>
+                        from <a href="https://www.met.no/">met.no</a>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-1 row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
+    <div class="row mt-1 g-4">
+        <div class="col col-sm-5">
             <div class="card h-100">
                 <div class="card-header h5">
-                    Sun
+                    Sun and clouds
                 </div>
-                <div class="card-body">
+                <div class="card-body pt-0 pb-0">
+                    <div class="row pt-1 pb-1">
+                        <div class="col" id="sunStats">
+                            <div class="text-muted">---</div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col d-flex justify-content-center align-items-center" id="sunAndCloudsImage"
+                             style="background-color: black;">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
+                               data-img-url="http://localhost:8081/earth">
+                                <div class="m-2" id="cardEarthBody">
+                                    <img src="http://localhost:8081/earth" alt="Image of the earth" height="150px"/>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-header h5">
-                    Stars
-                </div>
-                <div class="card-body">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
+        <div class="col col-sm-5">
             <div class="card h-100">
                 <div class="card-header h5">
                     Moon
                 </div>
-                <div class="card-body">
+                <div class="card-body pb-0 pt-0">
 
+                    <div class="row pt-1 pb-1">
+
+                        <div class="col" id="moonStats">
+                            <div class="text-muted">---</div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col d-flex justify-content-center align-items-center" id="moonImage"
+                             style="background-color: black;">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
+                               data-img-url="http://localhost:8081/moon">
+                                <div class="m-2" id="cardMoonBody">
+                                    <img src="http://localhost:8081/moon" alt="Image of the moon" height="150px"/>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col col-sm-2">
+            <div class="card h-100">
+                <div class="card-header h5">
+                    Stars
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center m-0 p-0"
+                     style="background-color: black;" id="cardStarsBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1 g-4">
+        <div class="col col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <img src="assets/SUN_logo.png" alt="Stellenbosch University"
+                         class="mx-auto d-block"
+                         style="max-width: 150px">
+                </div>
+            </div>
+        </div>
+
+        <div class="col col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <img src="assets/Faculty-of-Engineering-Stellenbosch-University-Logo.png"
+                         alt="Engineering Faculty"
+                         class="mx-auto d-block"
+                         style="max-width: 150px">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-1 small text-muted">&copy; 2025. A JPMeijers.com creation.</div>
+
+
+    <!-- Modal popup definition -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Enlarged Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- The full resolution image will be loaded here -->
+                    <img src="" class="img-fluid" id="modalImage" alt="Enlarged image">
                 </div>
             </div>
         </div>
@@ -153,6 +230,17 @@ background-position: center; background-image: url('assets/jonkershoek-mountains
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-<script src="index-logic.js"></script>
+
+<script src="/libraries/moment.2.30.1.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="/libraries/jquery.timeago.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"
+        integrity="sha512-F6rjAEKNMtM0aODcc/MdnAvhGxn7FCbAkKJ5FKba/fnD3gnN+LBEok326WAMdOhKQKYNr+j/tJEuV1PKwIfhCA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="index.js"></script>
 </body>
 </html>
