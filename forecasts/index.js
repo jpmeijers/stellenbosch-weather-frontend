@@ -266,7 +266,7 @@ function createTemperatureChart(timeseries) {
                         maxRotation: 0
                     },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Forecast Period'
                     },
                     grid: {
