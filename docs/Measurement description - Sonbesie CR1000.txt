@@ -1,0 +1,104 @@
+===Sonbesie - Campbell Scientific CR1000 data logger===
+
+Units TrackerWM=kW/m^2
+Units TrackerKJ=kJ/m^2
+Units ShadowWM=kW/m^2
+Units ShadowKJ=kJ/m^2
+Units SunWM=W/m^2
+Units SunKJ=kJ/m^2
+Units ShadowbandWM=W/m^2
+Units ShadowbandKJ=kJ/m^2
+Units UVA_Avg=W/m^2
+Units UVB_Avg=W/m^2
+
+Units WS_ms=meters/second
+Units WindDir=Degrees
+Units AirTC=Deg C
+Units RH=%
+
+
+==Sensors types==
+
+TrackerWM_Avg - Kipp & Zonen CHP1 Pyrheliometer NO1
+Tracker2WM_Avg - Kipp & Zonen CHP1 Pyrheliometer NO2
+*ShadowWM_Avg - Kipp & Zonen CMP11 Pyranometer
+*SunWM_Avg - Kipp & Zonen CMP11 Pyranometer
+ShadowbandWM_Avg - Kipp & Zonen CMP6 Pyranometer
+AirTC_Avg - Campbell Scientific CS215 Temperature & Relative Humidity Sensor
+RH - Campbell Scientific CS215 Temperature & Relative Humidity Sensor
+
+R. M. Young Wind Sentry Set 03001, Wind Speed & Direction Sensor measurements WS_ms and WindDir
+WS_ms_S_WVT - mean windspeed in meter/second
+WindDir_D1_WVT - mean wind direction in degrees
+WindDir_SD1_WVT - standard deviation of wind direction
+
+BP_mB_Avg - RM Young 61205V Barometric Pressure Sensor, Generic Single-Ended Voltage measurements BP_mB
+
+UVA_Avg - Kipp & Zonen UVS-AB-T radiometer
+UVB_Avg - Kipp & Zonen UVS-AB-T radiometer
+
+*ShadowWM_Avg & SunWM_Avg prior to 6 February 2012 represented data recorded from K&Z CMP6 pyranometers.
+
+==SB_TMin table==
+Entry written every 60 seconds
+
+Date - date of sample
+Time - time of sample
+TimeStamp - date and time of sample
+Record - the sample number. Resets when a new program is loaded, ie. not unique
+
+TrackerWM_Avg - average, 4 byte float 
+Tracker2WM_Avg - average, 4 byte float
+ShadowWM_Avg - average, 4 byte float
+SunWM_Avg - average, 4 byte float
+ShadowbandWM_Avg - average, 4 byte float
+AirTC_Avg - average, 2 byte float
+RH - single sample, 2 byte float
+
+WS_ms_S_WVT - mean windspeed in meter/second - 2 byte float
+WindDir_D1_WVT - mean wind direction in degrees - 2 byte float
+WindDir_SD1_WVT - standard deviation of wind direction - 2 byte float
+
+BP_mB_Avg - average, 2 byte float
+
+UVA_Avg - unknown
+UVB_Avg - unknown
+
+
+DataTable(THour,True,-1)
+	DataInterval(0,60,Min,10)
+	Minimum(1,BattV,FP2,False,False)
+	Average(1,TrackerWM,IEEE4,False)
+	Average(1,Tracker2WM,IEEE4,False)
+	Average(1,ShadowWM,IEEE4,False)
+	Average(1,SunWM,IEEE4,False)
+	Average(1,ShadowbandWM,IEEE4,False)
+	Average(1,AirTC,FP2,False)
+	Sample(1,RH,FP2)
+	WindVector(1,WS_ms,WindDir,FP2,False,0,0,0)
+	FieldNames("WS_ms_S_WVT,WindDir_D1_WVT,WindDir_SD1_WVT")
+	Average(1,BP_mB,FP2,False)
+EndTable
+
+DataTable(TDaily,True,-1)
+	DataInterval(0,1440,Min,10)
+	Totalize(1,TrackerKJ,IEEE4,False)
+	Totalize(1,Tracker2KJ,IEEE4,False)
+	Totalize(1,ShadowKJ,IEEE4,False)
+	Totalize(1,SunKJ,IEEE4,False)
+	Totalize(1,ShadowbandKJ,IEEE4,False)
+	Maximum(1,TrackerWM,IEEE4,False,True)
+	Maximum(1,Tracker2WM,IEEE4,False,True)
+	Maximum(1,ShadowWM,IEEE4,False,True)
+	Maximum(1,SunWM,IEEE4,False,True)
+	Maximum(1,ShadowbandWM,IEEE4,False,True)
+	Minimum(1,BattV,FP2,False,False)
+	Maximum(1,AirTC,FP2,False,False)
+	Minimum(1,AirTC,FP2,False,False)
+	Maximum(1,RH,FP2,False,False)
+	Minimum(1,RH,FP2,False,False)
+	WindVector(1,WS_ms,WindDir,FP2,False,0,0,0)
+	FieldNames("WS_ms_S_WVT,WindDir_D1_WVT,WindDir_SD1_WVT")
+	Maximum(1,BP_mB,FP2,False,False)
+	Minimum(1,BP_mB,FP2,False,False)
+EndTable

@@ -1,0 +1,110 @@
+Date
+Time
+Temp Out	C
+Hi Temp		C
+Low Temp	C
+Out Hum		%
+Dew		C
+Wind Speed	km/h
+Dir		degrees
+Wind Run	km
+Hi Speed	km/h
+Hi Dir		degrees
+Wind Chill	C
+Heat Index	C
+THW		C
+THSW Index	C
+Bar		hPa or millibar
+Rain		mm
+Rain Rate	mm/hour
+Solar Rad.	Watts per square meter
+Solar Energy	Ly (Langleys)
+Hi Solar Rad	Ly
+UV		UV index
+UV Dose		MEDs (Minimum Erythemal Dose)
+Hi UV		UV index
+Heat DD		C
+Cool DD		C
+In Temp		C
+In Hum		%
+In Dew		C
+In Heat		C
+ET		mm
+Wind Samp	wind speed samples in "Arc Int" amount of time
+Wind TX		RF channel for wind data
+ISS Recept	% - RF reception
+Arc Int		archival interval in minutes - 10 minutes for 2009, 1 minute since april 2010
+
+
+
+http://www.lookoutpointweather.com/pages/faqs.html ->
+
+Apparent Temperatures
+
+The Vantage Pro calculates three apparent temperature readings: Wind chill, Heat Index, and the Temperature/Humidity/Sun/Wind (THSW) Index. Apparent temperatures use additional weather data to calculate what a human body perceives the temperature to be in those conditions.
+
+Wind Chill
+
+Wind Chill takes into account how the speed of the wind affects our perception of the air temperature. Our bodies warm the surrounding air molecules by transferring heat from the skin. If there’s no air movement, this insulating layer of warm air molecules stays next to the body and offers some protection from cooler air molecules. However, wind sweeps that comfy warm air surrounding the body away. The faster the wind blows, the faster heat is carried away and the colder you feel.
+
+Heat Index
+
+The Heat Index uses temperature and the relative humidity to determine how hot the air actually “feels.” When humidity is low, the apparent temperature will be lower than the air temperature, since perspiration evaporates rapidly to cool the body. However, when humidity is high (i.e., the air is more saturated with water vapor) the apparent temperature “feels” higher than the actual air temperature, because perspiration evaporates more slowly.
+
+Note: Vantage Pro measures Heat Index only when the air temperature is above 57° F (14° C) because it’s insignificant at lower temperatures. (Below 57°, Heat Index = the air temperature.) The Heat Index is not calculated above 135° F (52° C).
+
+Temperature/Humidity/Sun/Wind (THSW) Index
+
+The THSW Index uses humidity and temperature like the Heat Index, but also includes the heating effects of sunshine and the cooling effects of wind (like Wind chill) to calculate an apparent temperature of what it “feels” like out in the sun.
+
+Humidity
+
+Humidity itself simply refers to the amount of water vapor in the air. However, the amount of water vapor that the air can contain varies with air temperature and pressure. Relative humidity takes into account these factors and offers a humidity reading which reflects the amount of water vapor in the air as a percentage of the amount the air is capable of holding. Relative humidity, therefore, is not actually a measure of the amount of water vapor in the air, but a ratio of the air’s water vapor content to its capacity. When we use the term humidity in the manual and on the screen, we mean relative humidity.
+
+It is important to realize that relative humidity changes with temperature, pressure, and water vapor content. A parcel of air with a capacity for 10 g of water vapor which contains 4 g of water vapor, the relative humidity would be 40%. Adding 2 g more water vapor (for a total of 6 g) would change the humidity to 60%. If that same parcel of air is then warmed so that it has a capacity for 20 g of water vapor, the relative humidity drops to 30% even though water vapor content does not change.
+
+Relative humidity is an important factor in determining the amount of evaporation from plants and wet surfaces since warm air with low humidity has a large capacity to absorb extra water vapor.
+
+Dew Point
+
+Dew point is the temperature to which air must be cooled for saturation (100% relative humidity) to occur, providing there is no change in water vapor content. The dew point is an important measurement used to predict the formation of dew, frost, and fog. If dew point and temperature are close together in the late afternoon when the air begins to turn colder, fog is likely during the night. Dew point is also a good indicator of the air’s actual water vapor content, unlike relative humidity, which takes the air’s temperature into account. High dew point indicates high water vapor content; low dew point indicates low water vapor content. In addition a high dew point indicates a better chance of rain and severe thunderstorms. You can also use dew point to predict the minimum overnight temperature. Provided no new fronts are expected overnight and the afternoon Relative Humidity ≥ 50%, the afternoon’s dew point gives you an idea of what minimum temperature to expect overnight, since the air cannot get colder than the dew point anytime.
+
+Rain
+
+The Vantage Pro incorporates a tipping-bucket rain collector in the ISS that measures 0.01” for each tip of the bucket. The station logs rain data in inch units. Four separate variables track rain totals: “rain storm”, “daily rain”, “monthly rain”, and “yearly rain”. Rain rate calculations are based on the interval of time between each bucket tip, which is each 0.01” rainfall increment.
+
+Barometric Pressure
+
+The weight of the air that makes up our atmosphere exerts a pressure on the surface of the earth. This pressure is known as atmospheric pressure. Generally, the more air above an area, the higher the atmospheric pressure, this, in turn, means that atmospheric pressure changes with altitude. For example, atmospheric pressure is greater at sea-level than on a mountaintop. To compensate for this difference and facilitate comparison between locations with different altitudes, atmospheric pressure is generally adjusted to the equivalent sea-level pressure. This adjusted pressure is known as barometric pressure. In reality, the Vantage Pro measures atmospheric pressure. When you enter your location’s altitude in Setup Mode, the Vantage Pro stores the necessary offset value to consistently translate atmospheric pressure into barometric pressure.
+
+Barometric pressure also changes with local weather conditions, making barometric pressure an extremely important and useful weather forecasting tool. High pressure zones are generally associated with fair weather while low pressure zones are generally associated with poor weather. For forecasting purposes, however, the absolute barometric pressure value is generally less important than the change in barometric pressure. In general, rising pressure indicates improving weather conditions while falling pressure indicates deteriorating weather conditions.
+
+Solar Radiation
+
+What we call “current solar radiation” is technically known as Global Solar Radiation, a measure of the intensity of the sun’s radiation reaching a horizontal surface. This irradiance includes both the direct component from the sun and the reflected component from the rest of the sky. The solar radiation reading gives a measure of the amount of solar radiation hitting the solar radiation sensor at any given time, expressed in Watts /sq. meter (W/m2).
+
+UV (Ultra Violet) Radiation
+
+Energy from the sun reaches the earth as visible, infrared, and ultraviolet (UV) rays. Exposure to UV rays can cause numerous health problems, such as sunburn, skin cancer, skin aging, and cataracts, and can suppress the immune system. The Vantage Pro can help analyze the changing levels of UV radiation and can advise of situations where exposure is particularly unacceptable. The Vantage Pro displays UV readings in two scales: MEDs and UV Index.
+
+    CAUTION: The station’s UV readings do not take into account UV reflected off snow, sand, or water, which can significantly increase your exposure. Nor do your UV readings take into account the dangers of prolonged UV exposure. The readings do not suggest that any amount of exposure is safe or healthful. Do not use the Vantage Pro to determine the amount of UV radiation to which you expose yourself. Scientific evidence suggests that UV exposure should be avoided and that even low UV doses can be harmful.
+
+UV MEDs
+
+MED stands for Minimum Erythemal Dose, defined as the amount of sunlight exposure necessary to induce a barely perceptible redness of the skin within 24 hours after sun exposure. In other words, exposure to 1 MED will result in a reddening of the skin. Because different skin types burn at different rates, 1 MED for persons with very dark skin is different from 1 MED for persons with very light skin.
+
+Both the U.S. Environmental Protection Agency (EPA) and Environment Canada have developed skin type categories correlating characteristics of skin with rates of sunburn. See Table A-1 “EPA Skin Phototypes” and Table A-2 “Environment Canada Skin Types and Reaction to the Sun” for a description of skin types.
+
+UV Dose (MEDs)
+
+UV Dose and Sunburn - Use this plot to estimate the MED dose leading to sunburn. A person with Type II (Environment Canada) skin type might choose 0.75 MED as the maximum for the day; in contrast, a person with Type V (Environment Canada) Skin Type might consider 2.5 MEDs a reasonable dose for the day. NOTE: the Vantage Pro assumes a Fitzpatrick (Environment Canada) Skin Type of II.
+
+UV Index
+
+Vantage Pro can also display UV Index, an intensity measurement first defined by Environment Canada and since been adopted by the World Meteorological Organization. UV Index assigns a number between 0 and 16 to the current UV intensity. The US EPA categorizes the Index values as shown in Table A-3 “UV Index.” The lower the number, the lower the danger of sunburn. The Index value published by the U.S. National Weather Service is a forecast of the next day’s noontime UV intensity. The Index values displayed by the Vantage Pro are real-time measurements.
+
+Evapotranspiration (ET)
+
+Evapotranspiration (ET) is a measurement of the amount of water vapor returned to the air in a given area. It combines the amount of water vapor returned through evaporation (from wet vegetation surfaces and the stoma of leaves) with the amount of water vapor returned through transpiration (exhaling of moisture through plant skin) to arrive at a total. Effectively, ET is the opposite of rainfall, and it is expressed in the same units of measure (Inches, millimeters).
+
+The Vantage Pro uses air temperature, relative humidity, average wind speed, and solar radiation data to estimate ET, which is calculated once an hour on the hour.
