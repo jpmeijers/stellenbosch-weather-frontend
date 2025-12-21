@@ -208,7 +208,7 @@ function createTemperatureChart(timeseries) {
                 drawTime: 'beforeDatasetsDraw',
                 label: {
                     display: isStartOfBlock,
-                    content: 'Night',
+                    content: '',
                     color: 'rgba(0, 0, 0, 0.3)',
                     font: { size: 10 },
                     position: 'start'
