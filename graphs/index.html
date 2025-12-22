@@ -33,7 +33,7 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                     <a class="nav-link" href="/forecasts/">Forecasts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/graphs/">Graphs</a>
+                    <a class="nav-link active" href="/graphs/">Graphs</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/download/">Download</a>
@@ -43,7 +43,7 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                        href="http://www.weather.lcao.co.za/index.php/Special_WeatherStatsRainfall">Rainfall</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/about/">About</a>
+                    <a class="nav-link" href="/about/">About</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -66,37 +66,12 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
 <div class="container-fluid" id="downloadContainer">
     <div class="row">
         <div class="col">
-            <h1>About</h1>
-
-            <ul>
-                <li>
-                    <a href="/docs/Measurement%20description%20-%20Sonbesie%20CR1000.txt">
-                        Sonbesie - Sensor and Measurement description
-                    </a>
-                </li>
-                <li>
-                    <a href="/docs/Measurement%20description%20-%20Davis%20Vantage%20Pro.txt">
-                        M&M and E&E - Measurement description
-                    </a>
-                </li>
-                <li>
-                    <a href="/docs/Sonbesie%20metadata.pdf">
-                        Stellenbsoch University - weather station setup
-                    </a>
-                </li>
-                <li>
-                    <a  target="_blank"
-                        href="https://maps.google.com/maps/ms?ie=UTF8&t=h&hl=en&msa=0&msid=105004959243337608908.00046bb532f92631515af&ll=-33.928415,18.865607&spn=0.002884,0.004796&z=18">
-                        Location of weather stations and webcam on Google Maps
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.jpmeijers.com/" target="_blank">
-                        About the author
-                    </a>
-                </li>
-            </ul>
-
+            <div id="historyControls" class="mb-3 d-flex flex-wrap gap-3 p-3 bg-light border rounded">
+                    <!-- Checkboxes will be generated here -->
+                </div>
+                <div style="height: 500px; position: relative;">
+                    <canvas id="historyChart"></canvas>
+                </div>
         </div>
     </div>
 </div>
