@@ -67,7 +67,7 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
 
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
             <h2>Disclaimer</h2>
 
@@ -94,7 +94,7 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
             </ul>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
         <div class="col">
             <h2>Acknowledge disclaimer</h2>
 
@@ -112,10 +112,42 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
         </div>
     </div>
 
+    <div class="row mt-4">
+        <div class="col">
+            <h2>Sonbesie</h2>
+            There are large gaps in the Sonbesie data from 2021 until 2025.
+            Downloading data from the Sonbesie can cause a significant load on the database.
+            Please limit downloads to a few months at most.
 
-    <div class="row">
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate">
+            </div>
+
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+
+            <div class="d-flex align-items-center">
+                <button type="button" class="btn btn-primary" onclick="downloadHistory()">Download History</button>
+                <div class="spinner-border ms-1 d-none" role="status" id="downloadHistorySpinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="ms-1 d-none" id="downloadHistoryText">Downloading</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-5 mb-5">
         <div class="col">
             <h2>Legacy data sets</h2>
+            <div class="spinner-border ms-1 d-none" role="status" id="downloadFileSpinner">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="ms-1 d-none" id="downloadFileText">Downloading</span>
+
             <table class="table table-bordered">
                 <!--table headings-->
                 <tr>
@@ -138,7 +170,10 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                     <td>Roof of the Civil Engineering building. Five storeys above ground.</td>
                     <td>2010-05-24 17:02:00</td>
                     <td>live</td>
-                    <td>See below</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="downloadFile('sb20102020')">2010-2020
+                        </button>
+                    </td>
                 </tr>
                 <tr>
                     <td style="font-weight: bold;">D-C</td>
@@ -203,15 +238,6 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                 </tr>
 
             </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            <h2>Sonbesie</h2>
-            There is a gap in data from the Sonbesie around 2024/2025.
-            Downloading data from the Sonbesie could cause a significant load on the database. Please limit downloads to
-            a few months at most.
         </div>
     </div>
 
