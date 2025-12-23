@@ -2,7 +2,6 @@
 /* global jQuery */
 /* global timeago */
 
-// const apiBaseUrl = 'http://localhost:8081/';
 const apiBaseUrl = 'http://weather.sun.ac.za/api/';
 
 const imageModal = document.getElementById('imageModal');

@@ -1,5 +1,4 @@
-const apiBaseUrl = 'http://localhost:8081/';
-// const apiBaseUrl = 'http://weather.sun.ac.za/api/';
+const apiBaseUrl = 'http://weather.sun.ac.za/api/';
 
 const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
