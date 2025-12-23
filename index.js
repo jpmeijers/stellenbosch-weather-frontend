@@ -24,9 +24,14 @@ const cardStarsBody = document.getElementById('cardStarsBody');
 let tempChartInstance = null;
 
 async function refreshOnLoad() {
-    refreshMinutely().then();
-    refreshHourly().then();
-    refreshDaily().then();
+    clearAlertMessage();
+    refreshCurrentWeather().then();
+    refreshForecast().then();
+    refreshSun().then();
+    refreshEarthImage().then();
+    refreshMoon().then();
+    refreshMoonImage().then();
+    refreshStars();
 }
 
 async function refreshMinutely() {
@@ -41,7 +46,7 @@ async function refreshHourly() {
     await refreshSun();
     await refreshMoonImage();
     await refreshEarthImage();
-    await refreshStars();
+    refreshStars();
 }
 
 async function refreshDaily() {
@@ -124,9 +129,9 @@ async function refreshMoon() {
         const moonsetTime = moonTimes.set ? moment(moonTimes.set).format('HH:mm') : 'N/A';
 
         moonStats.innerHTML = `
-            <div>${phaseName}</div>
-            <div>Moonrise: ${moonriseTime}</div>
-            <div>Moonset: ${moonsetTime}</div>
+            <div><span class="fw-bold">${phaseName}</span></div>
+            <div><span class="fw-bold">Moonrise:</span> ${moonriseTime}</div>
+            <div><span class="fw-bold">Moonset:</span> ${moonsetTime}</div>
         `
 
     } catch (error) {
@@ -173,9 +178,9 @@ async function refreshSun() {
         const solarNoonTime = sunTimes.solarNoon ? moment(sunTimes.solarNoon).format('HH:mm') : 'N/A';
 
         sunStats.innerHTML = `
-            <div>Sunrise: ${sunriseTime}</div>
-            <div>Solar Noon: ${solarNoonTime}</div>
-            <div>Sunset: ${sunsetTime}</div>
+            <div><span class="fw-bold">Sunrise:</span> ${sunriseTime}</div>
+            <div><span class="fw-bold">Solar Noon:</span> ${solarNoonTime}</div>
+            <div><span class="fw-bold">Sunset:</span>${sunsetTime}</div>
         `;
 
     } catch (error) {

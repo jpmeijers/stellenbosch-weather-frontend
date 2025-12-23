@@ -5,10 +5,20 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4DYH19E386"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
 
         gtag('config', 'G-4DYH19E386');
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit() {
+            document.getElementById("contactForm").submit()
+        }
     </script>
 
     <meta charset="UTF-8">
@@ -73,7 +83,7 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
 <!--    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
 <!--</div>-->
 
-<div class="container-fluid" id="downloadContainer">
+<div class="container">
     <div class="row">
         <div class="col">
             <h1>About</h1>
@@ -95,8 +105,8 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                     </a>
                 </li>
                 <li>
-                    <a  target="_blank"
-                        href="https://maps.google.com/maps/ms?ie=UTF8&t=h&hl=en&msa=0&msid=105004959243337608908.00046bb532f92631515af&ll=-33.928415,18.865607&spn=0.002884,0.004796&z=18">
+                    <a target="_blank"
+                       href="https://maps.google.com/maps/ms?ie=UTF8&t=h&hl=en&msa=0&msid=105004959243337608908.00046bb532f92631515af&ll=-33.928415,18.865607&spn=0.002884,0.004796&z=18">
                         Location of weather stations and webcam on Google Maps
                     </a>
                 </li>
@@ -107,6 +117,40 @@ background-position: center top; background-image: url('/assets/jonkershoek-moun
                 </li>
             </ul>
 
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-5">
+        <div class="col">
+            <h2>Contact</h2>
+
+            This website runs on a <strong>best-effort basis</strong>.
+            Its uptime is not constantly monitored.
+            In case of an outage, please check back later.
+            If the issue persists, please contact us below.
+
+            <!-- modify this form HTML and place wherever you want your form -->
+            <form
+                action="https://formspree.io/f/xbdrwraa"
+                method="POST"
+                class="mt-4"
+                id="contactForm"
+            >
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5"></textarea>
+                </div>
+                <button class="btn btn-primary g-recaptcha"
+                        data-sitekey="6LdztTQsAAAAAMna15FbK4CaoqegYzAulpoTJFY5"
+                        data-callback='onSubmit'
+                        data-action='submit'>
+                    Send
+                </button>
+            </form>
         </div>
     </div>
 </div>
