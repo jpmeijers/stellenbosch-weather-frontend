@@ -309,22 +309,29 @@ function updateCurrent(data) {
         let windString = windSpeedNum + " m/s, " +
             windSectorFromAngle(data["WindDir_D1_WVT"]);
 
-        if (windSpeedNum < 1) windString = "calm";
-        else if (windSpeedNum > 8.3) windString = windString + ", stormy";
-        else if (windSpeedNum > 5.6) windString = windString + ", very windy";
-        else if (windSpeedNum > 2.8) windString = windString + ", windy";
+        if (windSpeedNum < 0.5) windString = "calm";
+        else if (windSpeedNum >= 32.7) windString = windString + ", hurricane force";
+        else if (windSpeedNum >= 28.5) windString = windString + ", violent storm";
+        else if (windSpeedNum >= 24.5) windString = windString + ", storm";
+        else if (windSpeedNum >= 20.8) windString = windString + ", strong gale";
+        else if (windSpeedNum >= 17.2) windString = windString + ", gale";
+        else if (windSpeedNum >= 13.9) windString = windString + ", near gale";
+        else if (windSpeedNum >= 10.8) windString = windString + ", strong breeze";
+        else if (windSpeedNum >= 8.0) windString = windString + ", fresh breeze";
+        else if (windSpeedNum >= 5.5) windString = windString + ", moderate breeze";
+        else if (windSpeedNum >= 3.4) windString = windString + ", gentle breeze";
+        else if (windSpeedNum >= 1.6) windString = windString + ", light breeze";
+        else if (windSpeedNum >= 0.5) windString = windString + ", light air";
 
         cardCurrentBody.innerHTML = [
-            `<div>Date: ${momentObject.format("dddd, D MMMM YYYY, H:mm")}</div>`,
-            `<div>Wind: ${windString}</div>`,
-            `<div>Rain: <span class="text-muted">unavailable</span></div>`,
-            `<div>Humidity: ${data["RH"]}%</div>`,
-            `<div>Barometer: ${data["BP_mB_Avg"]}hPa</div>`,
+            `<div class="fw-bold">${momentObject.format("dddd, D MMMM YYYY, H:mm")}</div>`,
+            `<div><span class="fw-bold">Wind:</span> ${windString}</div>`,
+            `<div><span class="fw-bold">Rain:</span> <span class="text-muted">unavailable</span></div>`,
+            `<div><span class="fw-bold">Humidity:</span> ${data["RH"]}%</div>`,
+            `<div><span class="fw-bold">Barometer:</span> ${data["BP_mB_Avg"]}hPa</div>`,
         ].join('')
 
-
-
-        $("time#currentUpdated").timeago("update", new Date());
+        $("time#currentUpdated").timeago("update", new Date(data['TimeStamp']));
     } catch (error) {
         console.error('Error updating current:', error);
         setAlertMessage('Error updating current weather', 'danger')
@@ -350,8 +357,8 @@ function updateTemperature(data) {
             const maxTime = moment(data["max_temp_time"], "HH:mm:ss").format("HH:mm");
 
             outdoorTemperatureFooter.innerHTML = `
-            <div>Min: ${data["min_temp"]}&deg;C @ ${minTime}</div>
-            <div>Max: ${data["max_temp"]}&deg;C @ ${maxTime}</div>`
+            <div>Max: ${data["max_temp"]}&deg;C @ ${maxTime}</div>
+            <div>Min: ${data["min_temp"]}&deg;C @ ${minTime}</div>`
         } else {
             outdoorTemperatureFooter.innerHTML = "<span class='text-muted'>---</span>";
         }
@@ -379,18 +386,30 @@ function updateForecast(data) {
 
     let todayTemps = [];
     let tomorrowTemps = [];
+    let todaySymbol = '';
+    let tomorrowSymbol = '';
 
     data.properties.timeseries.forEach(entry => {
         const time = moment(entry.time);
         const temp = entry.data.instant.details.air_temperature;
         const dateStr = time.format('YYYY-MM-DD');
+        const symbol = entry.data.next_1_hours?.summary?.symbol_code || entry.data.next_6_hours?.summary?.symbol_code;
 
         if (dateStr === todayStr) {
             todayTemps.push(temp);
+            if (time.hour() === 12) todaySymbol = symbol;
         } else if (dateStr === tomorrowStr) {
             tomorrowTemps.push(temp);
+            if (time.hour() === 12) tomorrowSymbol = symbol;
         }
     });
+
+    // Fallback to first available symbol if noon isn't found
+    if (!todaySymbol && todayTemps.length > 0) todaySymbol = data.properties.timeseries[0].data.next_1_hours?.summary?.symbol_code || data.properties.timeseries[0].data.next_6_hours?.summary?.symbol_code;
+    if (!tomorrowSymbol && tomorrowTemps.length > 0) {
+        const firstTom = data.properties.timeseries.find(e => moment(e.time).format('YYYY-MM-DD') === tomorrowStr);
+        tomorrowSymbol = firstTom?.data.next_1_hours?.summary?.symbol_code || firstTom?.data.next_6_hours?.summary?.symbol_code;
+    }
 
     const todayMax = todayTemps.length > 0 ? Math.max(...todayTemps) : 'N/A';
     const todayMin = todayTemps.length > 0 ? Math.min(...todayTemps) : 'N/A';
@@ -399,13 +418,31 @@ function updateForecast(data) {
 
 
     try {
-        cardForecastBody.innerHTML = [
-            `<div>Date: ${today.format("dddd, D MMMM YYYY")}</div>`,
-            `<div>Max: ${todayMax}°C Min: ${todayMin}°C</div>`,
-            `<br>`, // Add a line break for spacing
-            `<div>Date: ${tomorrow.format("dddd, D MMMM YYYY")}</div>`,
-            `<div>Max: ${tomorrowMax}°C Min: ${tomorrowMin}°C</div>`,
-        ].join('')
+        cardForecastBody.innerHTML = `
+        <div class="row">
+            <div class="col">
+                <div class="fw-bold">${today.format("dddd, D MMMM YYYY")}</div>
+                <div>Max: ${todayMax}°C Min: ${todayMin}°C</div>
+            </div>
+            <div class="col">
+                ${getWeatherIcon(todaySymbol, "50px")}
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col">
+                <div class="fw-bold">${tomorrow.format("dddd, D MMMM YYYY")}</div>
+                <div>Max: ${tomorrowMax}°C Min: ${tomorrowMin}°C</div>
+            </div>
+            <div class="col">
+                ${getWeatherIcon(tomorrowSymbol, "50px")}
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col small">
+                <a href="/forecasts/">See more</a>
+            </div>
+        </div>
+        `;
 
         $("time#forecastUpdated").timeago("update", new Date(data.last_modified));
     } catch (error) {
@@ -557,6 +594,15 @@ async function showTemperatureHistory() {
     }
 }
 
+function getWeatherIcon(symbolCode, size = '40px') {
+    if (!symbolCode) return '';
+    return `<img 
+                src="/assets/weathericons/weather/svg/${symbolCode}.svg"
+                alt="${symbolCode}" 
+                title="${symbolCode}"
+                style="width: ${size}; height: ${size}; vertical-align: middle;"
+            >`;
+}
 
 // Top level functions, aka entry point
 window.onload = refreshOnLoad;

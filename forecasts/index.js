@@ -92,8 +92,8 @@ function updateForecast(data) {
         card.appendChild(time);
 
         const icon = document.createElement('div');
-        icon.textContent = getWeatherIcon(entry.data.next_1_hours?.summary?.symbol_code || entry.data.next_6_hours?.summary?.symbol_code);
-        icon.style.cssText = 'font-size: 40px; margin-bottom: 10px;';
+        icon.innerHTML = getWeatherIcon(entry.data.next_1_hours?.summary?.symbol_code || entry.data.next_6_hours?.summary?.symbol_code);
+        icon.style.cssText = 'margin-bottom: 10px; height: 40px; display: flex; justify-content: center; align-items: center;';
         card.appendChild(icon);
 
         const temp = document.createElement('div');
@@ -132,8 +132,9 @@ function updateForecast(data) {
     thead.innerHTML = `
         <tr style="background: #f5f5f5;">
             <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Time</th>
+            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;"></th>
             <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Temp (°C)</th>
-            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Precipitation (mm)</th>
+            <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;" title="Precipitation (mm)">Pcpn (mm)</th>
             <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Wind (m/s)</th>
             <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Humidity (%)</th>
             <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Pressure (hPa)</th>
@@ -148,9 +149,11 @@ function updateForecast(data) {
 
         const details = entry.data.instant.details;
         const precipAmount = entry.data.next_1_hours?.details?.precipitation_amount || 0;
+        const symbolCode = entry.data.next_1_hours?.summary?.symbol_code || entry.data.next_6_hours?.summary?.symbol_code;
 
         row.innerHTML = `
             <td style="padding: 10px; border-bottom: 1px solid #eee;">${formatTime(entry.time)}</td>
+            <td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${getWeatherIcon(symbolCode, '30px')}</td>
             <td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${details.air_temperature}</td>
             <td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${precipAmount}</td>
             <td style="padding: 10px; text-align: center; border-bottom: 1px solid #eee;">${details.wind_speed}</td>
@@ -299,28 +302,14 @@ function formatTime(isoString) {
     return `${day}/${month} ${hours}:${minutes}`;
 }
 
-function getWeatherIcon(symbolCode) {
-    if (!symbolCode) return '❓';
-
-    const iconMap = {
-        'clearsky': '☀️',
-        'fair': '🌤️',
-        'partlycloudy': '⛅',
-        'cloudy': '☁️',
-        'rain': '🌧️',
-        'lightrain': '🌦️',
-        'heavyrain': '⛈️',
-        'snow': '❄️',
-        'sleet': '🌨️',
-        'fog': '🌫️',
-        'thunder': '⚡'
-    };
-
-    for (const [key, icon] of Object.entries(iconMap)) {
-        if (symbolCode.includes(key)) return icon;
-    }
-
-    return '🌡️';
+function getWeatherIcon(symbolCode, size = '40px') {
+    if (!symbolCode) return '';
+    return `<img 
+                src="/assets/weathericons/weather/svg/${symbolCode}.svg"
+                alt="${symbolCode}" 
+                title="${symbolCode}"
+                style="width: ${size}; height: ${size}; vertical-align: middle;"
+            >`;
 }
 
 
